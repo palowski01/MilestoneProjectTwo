@@ -6,9 +6,11 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Account implements MonthlyStatement{
 
-	protected static List<String> statement = new ArrayList<String>();;
+
+	protected static List<String> statement = new ArrayList<String>();
 	protected double balance;
 	protected String account;
 	
@@ -24,18 +26,29 @@ public class Account implements MonthlyStatement{
 	public void setAccount(String account) {
 		this.account = account;
 	}
-	
+
+	/**
+	 * 
+	 * @param amount
+	 */
 	public void doWithdraw(double amount) {
 		double newBalance = this.balance - amount;
 		this.setBalance(newBalance);
 		
 	}
 	
+	/**
+	 * 
+	 * @param amount
+	 */
 	public void doDeposit(double amount) {
 		double newBalance = this.balance + amount;
 		this.setBalance(newBalance);
 		
 	}
+	
+//Method to add to List Array after every transaction
+//This method is called after every deposit, withdrawl, and payment
 	
 	public void addToStatement(double amount, String transActionType, String accountType) {
 		LocalDate date = LocalDate.now();
@@ -52,6 +65,8 @@ public class Account implements MonthlyStatement{
 		setStatement(statement);
 	}
 
+	//Displays all information in the ArrayList
+	
 	public static void displayStatement() {
 		System.out.println("=========================================");
 		System.out.println("               STATEMENT FOR                 ");
@@ -62,13 +77,24 @@ public class Account implements MonthlyStatement{
 			System.out.println(str);
 		}
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public static List<String> getStatement() {
 		return statement;
 	}
+	
+	/**
+	 * 
+	 * @param statement
+	 */
 	public static void setStatement(List<String> statement) {
 		Account.statement = statement;
 	}
 	
+	//Clears out the ArrayList 
 	public static void clearStatement() {
 		statement.clear();
 	}

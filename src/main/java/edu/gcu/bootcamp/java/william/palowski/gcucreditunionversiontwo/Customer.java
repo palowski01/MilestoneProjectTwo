@@ -36,6 +36,11 @@ public class Customer {
 		this.date = date;
 	}
 	
+	/**
+	 * 
+	 * @param bank
+	 * @param customer
+	 */
 	public void createAccounts(Bank bank, Customer customer) {
 		Checking checking = new Checking(2500.00, "45676543");
 		Saving savings = new Saving(5000.00, "12345678");

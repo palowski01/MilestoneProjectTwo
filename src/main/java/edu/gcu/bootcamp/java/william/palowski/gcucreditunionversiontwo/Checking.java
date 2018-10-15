@@ -13,6 +13,7 @@ public class Checking extends Account{
 		this.overDraft = overDraft;
 	}
 	
+
 	public void doWithdraw(double amount) {
 		
 		double newBalance = this.balance - amount;

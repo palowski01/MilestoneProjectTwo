@@ -18,14 +18,6 @@ public class Bank {
 		Bank gcu = new Bank("GCU Credit Union");
 		customer = gcu.createCustomer();
 		customer.createAccounts(gcu, customer);
-//		Checking billChecking = new Checking(5000.00, "991773");
-//		Saving billSaving = new Saving(5000.00, "191923");
-//		Loan billLoan = new Loan(10000.00, "9876543");
-//		billChecking.setOverDraft(45.00);
-//		billSaving.setMinBalance(200);
-//		billSaving.setAnnualInterestRate(.03);
-//		billSaving.setServiceFee(25);
-//		gcu.displayMenu(billChecking, billSaving, billLoan);
 		
 	}
 	
@@ -40,7 +32,12 @@ public class Bank {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+	//This method creates a customer.  It will later on check on whether the customer is already
+	//a member
+	/**
+	 * 
+	 * @return
+	 */
 	private Customer createCustomer() {
 		String fName = "James";
 		String lName = "Bond";
@@ -54,6 +51,13 @@ public class Bank {
 		return newCustomer;
 	}
 	
+	/**
+	 * 
+	 * @param checking
+	 * @param saving
+	 * @param loan
+	 * @param customer
+	 */
 	public void displayMenu(Checking checking, Saving saving, Loan loan, Customer customer) {
 		int option = 0;
 		do {
@@ -82,6 +86,14 @@ public class Bank {
 		
 	}
 	
+	/**
+	 * 
+	 * @param opt
+	 * @param checking
+	 * @param saving
+	 * @param loan
+	 * @param customer
+	 */
 	private void actionMenu(int opt, Checking checking, Saving saving, Loan loan, Customer customer) {
 		switch(opt) {
 			case 1: this.displayDepositChecking(checking);
@@ -105,6 +117,13 @@ public class Bank {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param checking
+	 * @param saving
+	 * @param loan
+	 * @param customer
+	 */
 	private void doEndOfMonth(Checking checking, Saving saving, Loan loan, Customer customer) {
 		double interestOnLoan = loan.balance * loan.getInterestRate();
 		double interestRatePerMonth = (saving.getAnnualInterestRate()/12);
@@ -162,6 +181,12 @@ public class Bank {
 		System.out.println("=========================================");
 	}
 	
+	/**
+	 * 
+	 * @param checking
+	 * @param saving
+	 * @param loan
+	 */
 	private void displayBalanceScreen(Checking checking, Saving saving, Loan loan) {
 		
 		System.out.printf("For checking account #%s your balance is $%.2f", checking.account, checking.balance);
@@ -172,6 +197,10 @@ public class Bank {
 		System.out.println();
 	}
 	
+	/**
+	 * 
+	 * @param saving
+	 */
 	private void displayWithdrawSavings(Saving saving) {
 
 		System.out.println("WITHDRAW FROM SAVINGS ACCOUNT #" + saving.account);
@@ -186,6 +215,10 @@ public class Bank {
 		saving.addToStatement(withdraw, "withdraw", "Savings");
 	}
 	
+	/**
+	 * 
+	 * @param checking
+	 */
 	private void displayWithdrawChecking(Checking checking) {
 		
 		System.out.println("WITHDRAW FROM CHECKING ACCOUNT #" + checking.account);
@@ -203,6 +236,10 @@ public class Bank {
 		checking.addToStatement(withdraw,"withdraw", "Checking");
 	}
 	
+	/**
+	 * 
+	 * @param saving
+	 */
 	private void displayDepositSaving(Saving saving) {
 		
 		System.out.println("DEPOSIT INTO SAVINGS ACCT #" + saving.account);
@@ -216,6 +253,10 @@ public class Bank {
 		
 	}
 	
+	/**
+	 * 
+	 * @param checking
+	 */
 	private void displayDepositChecking(Checking checking) {
 		
 		System.out.println("DEPOSIT INTO CHEKCING ACCT #" + checking.account);
@@ -229,6 +270,10 @@ public class Bank {
 		
 	}
 	
+	/**
+	 * 
+	 * @param loan
+	 */
 	private void displayLoanPayment(Loan loan) {
 		System.out.println("MAKE A PAYMENT TO LOAN ACCT #" + loan.account);
 		System.out.printf("Your loan balance is $%.2f", loan.balance);
