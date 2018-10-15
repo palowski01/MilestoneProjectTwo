@@ -1,6 +1,7 @@
 package edu.gcu.bootcamp.java.william.palowski.gcucreditunionversiontwo;
 
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Scanner;
 
 import edu.gcu.bootcamp.java.william.palowski.gcucreditunionversiontwo.Bank;
@@ -69,18 +70,19 @@ public class Bank {
 			System.out.println("4: : Withdraw from Savings");
 			System.out.println("5: : Pay on Loan");
 			System.out.println("6: : Get Account Balances");
-			System.out.println("7: : Monthly Statement"); //calculate service fee and interest earned
+			System.out.println("7: : Calculate End of Month"); //calculate service fee and interest earned
+			System.out.println("8: : Check Current Statement");
 			System.out.println("-----------------------------------------");
 			System.out.println("9: : Exit");
 			option = input.nextInt();
 			System.out.println();
-			this.actionMenu(option, checking, saving, loan);
+			this.actionMenu(option, checking, saving, loan, customer);
 		}while(option != 9);
 		
 		
 	}
 	
-	private void actionMenu(int opt, Checking checking, Saving saving, Loan loan) {
+	private void actionMenu(int opt, Checking checking, Saving saving, Loan loan, Customer customer) {
 		switch(opt) {
 			case 1: this.displayDepositChecking(checking);
 				break;
@@ -94,17 +96,20 @@ public class Bank {
 				break;
 			case 6: this.displayBalanceScreen(checking, saving, loan);
 				break;
-			case 7: this.doEndOfMonth(checking, saving, loan);
+			case 7: this.doEndOfMonth(checking, saving, loan, customer);
+				break;
+			case 8: Account.displayStatement();
 				break;
 			case 9: this.displayExitScreen();
 				break;
 		}
 	}
 	
-	private void doEndOfMonth(Checking checking, Saving saving, Loan loan) {
-
+	private void doEndOfMonth(Checking checking, Saving saving, Loan loan, Customer customer) {
+		double interestOnLoan = loan.balance * loan.getInterestRate();
 		double interestRatePerMonth = (saving.getAnnualInterestRate()/12);
 		double interestOnAccount = saving.balance * interestRatePerMonth;
+		LocalDate date = LocalDate.now();
 		
 		System.out.println("Calculate end of month items");
 		System.out.printf("Savings account #%s has a balance of $%.2f", saving.account, saving.balance);
@@ -125,9 +130,29 @@ public class Bank {
 		System.out.printf("Checking account #%s has a balance of $%.2f", checking.account, checking.balance);
 		System.out.println();
 		if (checking.balance < 0) {
-			System.out.printf("Your account is below 0. you were assessed a $%.2f overdraft fee.", checking.getOverDraft());
+			System.out.printf("Your account is below 0. you were assessed a $%.2f overdraft fee.\n", checking.getOverDraft());
 		}
-		System.out.println();
+		
+		//The line below is for testing end of month purposes only
+		//comment out this line if you want the program to run normal
+//		date = date.with(TemporalAdjusters.lastDayOfMonth()); 
+//		if ((date == date.with(TemporalAdjusters.lastDayOfMonth())) && (loan.balance == loan.balance))
+		
+		if (loan.balance == loan.getNewLoanBalance()){
+			loan.setBalance((interestOnLoan/12) + loan.getLateFee() + loan.balance);
+			System.out.printf("You did not make a payment on your Loan account #%s.\n", loan.account);
+			System.out.printf("You were charged a late fee of $%.2f...\n", loan.getLateFee());
+			System.out.printf("Your Loan account balance is $%.2f...", loan.balance);
+			System.out.println();
+		}
+		else {
+			loan.setBalance((interestOnLoan/12) + loan.balance);
+			System.out.printf("Your Loan account #%s has a balance of $%.2f.", loan.account, loan.balance);
+			loan.setNewLoanBalance(loan.balance);
+		}
+		System.out.println("\n\n\n");
+		Account.displayStatement();
+		Account.clearStatement();
 	}
 	
 	private void displayExitScreen() {
@@ -158,7 +183,7 @@ public class Bank {
 		double withdraw = input.nextDouble();
 		System.out.println();
 		saving.doWithdraw(withdraw);
-		
+		saving.addToStatement(withdraw, "withdraw", "Savings");
 	}
 	
 	private void displayWithdrawChecking(Checking checking) {
@@ -175,7 +200,7 @@ public class Bank {
 			System.out.printf("OVERDRAFT NOTICE: $%.2f fee assessed!", checking.getOverDraft());
 			System.out.println();
 		}
-		
+		checking.addToStatement(withdraw,"withdraw", "Checking");
 	}
 	
 	private void displayDepositSaving(Saving saving) {
@@ -187,6 +212,7 @@ public class Bank {
 		double deposit = input.nextDouble();
 		System.out.println();
 		saving.doDeposit(deposit);
+		saving.addToStatement(deposit, "deposit",  "Savings");
 		
 	}
 	
@@ -199,6 +225,7 @@ public class Bank {
 		double deposit = input.nextDouble();
 		System.out.println();
 		checking.doDeposit(deposit);
+		checking.addToStatement(deposit, "deposit",  "Checking");
 		
 	}
 	
@@ -210,6 +237,7 @@ public class Bank {
 		double payment = input.nextDouble();
 		System.out.println();
 		loan.doWithdraw(payment);
+		loan.addToStatement(payment, "payment", "Loan");
 	}
 
 }

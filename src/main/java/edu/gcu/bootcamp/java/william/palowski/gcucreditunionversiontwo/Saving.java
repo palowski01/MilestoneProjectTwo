@@ -7,18 +7,21 @@ public class Saving extends Account{
 	private double minBalance;
 	
 	public double getServiceFee() {
+		setServiceFee(25.00);
 		return serviceFee;
 	}
 	public void setServiceFee(double serviceFee) {
 		this.serviceFee = serviceFee;
 	}
 	public double getAnnualInterestRate() {
+		setAnnualInterestRate(.03);
 		return annualInterestRate;
 	}
 	public void setAnnualInterestRate(double annualInterestRate) {
 		this.annualInterestRate = annualInterestRate;
 	}
 	public double getMinBalance() {
+		setMinBalance(200.00);
 		return minBalance;
 	}
 	public void setMinBalance(double minBalance) {

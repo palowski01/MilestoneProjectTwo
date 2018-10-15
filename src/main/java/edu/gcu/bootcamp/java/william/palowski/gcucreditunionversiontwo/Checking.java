@@ -5,6 +5,7 @@ public class Checking extends Account{
 	private double overDraft;
 
 	public double getOverDraft() {
+		setOverDraft(45.00);
 		return overDraft;
 	}
 
